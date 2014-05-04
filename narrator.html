@@ -1,0 +1,155 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="/styles.css"></link>
+    <title>Narrator.js</title>
+  </head>
+  <body>
+
+<h1>Narrator.js</h1>
+
+<div class="separator">&mdash;</div>
+
+<h2>Forward</h2>
+
+<p>The ambition of software development is to create a story that can be easily understood by both a person and a computer. Why not go all in and just write documents that can be read by both beast and machine? Donald Knuth calls this "Literate Programming".</p>
+
+<p>I'm going to try to figure out how Literate Programming might work for web apps by making a web app for writing narrative web apps called Narrator. Here we go!</p>
+
+<div class="separator">&mdash;</div>
+
+<h2>App</h2>
+
+<p>The basic interaction of Narrator is reading, writing, and running software. It's an <ref>Ember app</ref>. Ember is a neat new web framework that has a Narrative plugin.</p>
+
+<p>This is the app's <ref>index template</ref>:</p>
+
+<pre><code># index template
+{{narrative_editor content=sample_narrative}}
+</code></pre>
+
+<p>In the <ref>index route</ref> it loads this <ref>sample narrative</ref>:</p>
+
+<pre><code># index route
+App.IndexRoute = Ember.Route.extend({
+  content: sample_narrative
+});</code></pre>
+
+<pre><code># sample narrative
+Welcome to Narrative.js
+-----------------------
+
+Go ahead and start editing!
+
+You can create a variable 
+</code></pre>
+
+<div class="separator">—</div>
+
+<h2>Narrator</h2>
+
+<p>We need a something that lets our narratives interact with the computer. For this we
+use a humble object:</p>
+
+<pre><code>narrator = {}
+</code></pre>
+
+<p>We'll describe the tools that go on there in the next few chapters.</p>
+
+<div class="separator">—</div>
+
+<h2>Defining an interface with a signal</h2>
+
+<p>In order for Narrator to be able to interpret a nice readable markdown document as
+runnable code, the narrator object provides some functions that let you define "interfaces" that allow narratives to "come alive".</p>
+
+<h3>Let's <ref>test</ref> it out:</h3>
+
+<p>First we'll register an interface with narrator:</p>
+
+<pre><code>interface = narrator.registerInterface 'ember app'
+</code></pre>
+
+<p>Then we'll define a signal it can responds to:</p>
+
+<pre><code>interface.addSignal
+  pattern: 
+    '(.*) template': ['name']
+  action: (content) =&gt;
+    new File("templates/#{@name}.hbs").append content
+</code></pre>
+
+<p>Next we'll create a <ref>test narrative</ref>:</p>
+
+<pre><code>There is an `ember app`. It has a `index template` with 
+  this in it:
+
+    hello world!
+</code></pre>
+
+<p>And finally run it:</p>
+
+<pre><code>narrator.run test_narrative
+</code></pre>
+
+<p>At this point we'll <ref>test that the file exists</ref>:</p>
+
+<pre><code>fileToCheck = new File('templates/index.hbs')
+expect(fileToCheck.exists()).toBe true
+</code></pre>
+
+<p>And it contains the text:</p>
+
+<pre><code>expect(fileToCheck.content()).toBe "hello world!"
+</code></pre>
+
+<h3>How it works:</h3>
+
+<p>An interface is engaged whenver a pattern is mentioned in your narrative. Once engaged
+it has a bunch of signals it listens for:</p>
+
+<pre><code>Interface = ({pattern}) -&gt;
+  @signals = []
+</code></pre>
+
+<p>The register function creates an interface with the provided pattern and stores it
+in a list:</p>
+
+<pre><code>narrator.interfaces = []
+
+narrator.registerInterface = (pattern) -&gt;
+  @interfaces.push new Interface {pattern}
+</code></pre>
+
+<p>A signal also has a pattern that activates it, and it also has an "action" function that gets
+run whenever that signal is mentioned:</p>
+
+<pre><code>Signal = ({pattern, action}) -&gt;
+  @pattern = new RegExp pattern
+
+Interface.prototype.addSignal (options) -&gt;
+  @signalsnew Signal options
+</code></pre>
+
+<p>When we call "run" we parse through the narrative, executing signals as we go:</p>
+
+<pre><code>narrator.run = (text) -&gt;
+  new SegmentSplitter(text).segments.each ({inputs, content}) =&gt;
+    matchingSignals = @signals.find (s) -&gt; s.pattern.matchesAny(inputs)
+
+    matchingSignals.each (signal) -&gt;
+      signal.handle inputs, content
+</code></pre>
+
+<p>And then finally deploys the app:</p>
+
+<pre><code>  @deploy()
+</code></pre>
+
+<div class="separator">&mdash;</div>
+
+  <div class="footer">
+    <a href="https://github.com/erikpukinskis/narrativejs">Code</a>
+    <a href="http://twitter.com/erikpukinskis">Twitter</a>
+    <a href="narrator.rss">RSS forever</a>
+  </div>
+</html>

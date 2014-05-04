@@ -1,0 +1,62 @@
+html {
+  background: linear-gradient(to bottom, #fff 0%,#eee 100%);
+}
+
+body {
+  max-width: 600px;
+  margin: 60px auto;
+  color: #333;
+  font-size: 20px;
+}
+
+p {
+  text-align:justify;
+  text-justify:inter-word;  
+}
+
+h1, h2, h3 {
+  font-weight: normal;
+  text-align: center;
+}
+
+h3 {
+  font-style: italic;
+}
+
+a {
+  color: #dd2b2b;
+}
+
+.separator, .footer {
+  text-align: center;
+}
+
+p, .footer a {
+  line-height: 1.4em;
+  display: block;
+}
+
+.separator, h1, h2 {
+  margin: 40px 0;
+}
+
+code {
+  background: linear-gradient(to bottom, #fff 0%,#ccc 100%);
+  line-height: 1.4em;
+  background: rgba(255,255,255,0.7);
+  padding: 5px 10px;
+  color: #555;
+  display: block;
+}
+
+code, ref {
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  font-family: monospace;
+  font-size: 16px;
+}
+
+ref  {
+  padding: 2px 4px;  
+  margin-right: 0.25em;
+}
