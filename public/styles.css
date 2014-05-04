@@ -1,0 +1,38 @@
+html {
+  background: linear-gradient(to bottom, #fff 0%,#ddd 100%); /* W3C */;
+}
+
+body {
+  max-width: 500px;
+  margin: 1em auto;
+  color: #333;
+  font-size: 20px;
+}
+
+p {
+  text-align:justify;
+  text-justify:inter-word;  
+}
+
+h1, h2 {
+  font-weight: normal;
+  text-align: center;
+}
+
+a {
+  color: #dd2b2b;
+}
+
+.separator, .footer {
+  text-align: center;
+}
+
+p, .footer a {
+  line-height: 1.4em;
+  display: block;
+}
+
+.separator, h1, h2 {
+  margin: 40px 0;
+}
+
