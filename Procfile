@@ -1,1 +1,1 @@
-web: node narrator.js
+web: node server.js
