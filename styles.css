@@ -3,7 +3,7 @@ html {
 }
 
 body {
-  max-width: 600px;
+  max-width: 670px;
   margin: 60px auto;
   color: #333;
   font-size: 20px;
@@ -50,6 +50,7 @@ code {
 }
 
 code, ref {
+  letter-spacing: -0.05em;
   border: 1px solid #ddd;
   border-radius: 2px;
   font-family: monospace;
@@ -59,4 +60,6 @@ code, ref {
 ref  {
   padding: 2px 4px;  
   margin-right: 0.25em;
+  color: #00B57A;
+  border-color: #00B57A;
 }
