@@ -74,7 +74,7 @@ runnable code, the narrator object provides some functions that let you define "
 <pre><code>interface.addSignal
   pattern: 
     '(.*) template': ['name']
-  action: (content) =&gt;
+  action: (content) =>
     new File("templates/#{@name}.hbs").append content
 </code></pre>
 
@@ -97,17 +97,17 @@ runnable code, the narrator object provides some functions that let you define "
 expect(fileToCheck.exists()).toBe true
 </code></pre>
 
-<p>And it contains the text:</p>
+<p>And it <ref>should contain the text</ref>:</p>
 
 <pre><code>expect(fileToCheck.content()).toBe "hello world!"
 </code></pre>
 
-<h3>And then <ref>implement</ref> it:</h3>
+<h3>And then we <ref>implement</ref> it:</h3>
 
 <p>An interface is engaged whenver a pattern is mentioned in your narrative. Once engaged
 it has a bunch of signals it listens for:</p>
 
-<pre><code>Interface = ({pattern}) -&gt;
+<pre><code>Interface = ({pattern}) ->
   @signals = []
 </code></pre>
 
@@ -116,34 +116,33 @@ in a list:</p>
 
 <pre><code>narrator.interfaces = []
 
-narrator.registerInterface = (pattern) -&gt;
+narrator.registerInterface = (pattern) ->
   @interfaces.push new Interface {pattern}
 </code></pre>
 
 <p>A signal also has a pattern that activates it, and it also has an "action" function that gets
 run whenever that signal is mentioned:</p>
 
-<pre><code>Signal = ({pattern, action}) -&gt;
+<pre><code>Signal = ({pattern, action}) ->
   @pattern = new RegExp pattern
 
-Interface.prototype.addSignal (options) -&gt;
+Interface.prototype.addSignal (options) ->
   @signalsnew Signal options
 </code></pre>
 
 <p>When we call "run" we parse through the narrative, executing signals as we go:</p>
 
-<pre><code>narrator.run = (text) -&gt;
-  new SegmentSplitter(text).segments.each ({inputs, content}) =&gt;
-    matchingSignals = @signals.find (s) -&gt; s.pattern.matchesAny(inputs)
+<code class="interrupted">narrator.run = (text) ->
+  new SegmentSplitter(text).segments.each ({inputs, content}) =>
+    matchingSignals = @signals.find (s) -> s.pattern.matchesAny(inputs)
 
-    matchingSignals.each (signal) -&gt;
+    matchingSignals.each (signal) ->
       signal.handle inputs, content
-</code></pre>
 
-<p>And then finally deploys the app:</p>
+    <div class="comment">And then finally deploys the app:</div>
 
-<pre><code>  @deploy()
-</code></pre>
+    @deploy()
+</code>
 
 <div class="separator">&mdash;</div>
 
